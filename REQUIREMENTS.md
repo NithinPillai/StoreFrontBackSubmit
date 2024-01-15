@@ -5,18 +5,18 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 ## API Endpoints
 #### Products
-- Index 'storefront_products/' (GET Request)
-- Show 'storefront_products/:id' (GET Request)
-- Create [token required] 'storefront_products/create' (POST Request)
+- Index '/products' (GET Request)
+- Show '/products/:id' (GET Request)
+- Create [token required] '/products/create' (POST Request)
 
 
 #### Users
-- Index [token required] 'users/' (GET Request)
-- Show [token required] 'users/:id' (GET Request)
-- Create N[token required] 'users/create' (POST Request)
+- Index [token required] '/users/' (GET Request)
+- Show [token required] '/users/:id' (GET Request)
+- Create N[token required] '/users/create' (POST Request)
 
 #### Orders
-- Current Order by user (args: user id)[token required] 'orders/:user_id' (GET Request)
+- Current Order by user (args: user id)[token required] '/orders/:user_id' (GET Request)
 
 
 ## Data Shapes

@@ -1,7 +1,7 @@
 import supertest from 'supertest';
 import jwt, { Secret } from 'jsonwebtoken';
 import { BaseOrder, Order, StorefrontOrderStore } from '../SFOrder';
-import { BaseProduct, StorefrontProductStore } from '../SFProduct';
+import { BaseProduct, Product, StorefrontProductStore } from '../SFProduct';
 import { BaseAuthUser, StorefrontUserStore } from '../SFUser';
 import app from '../../server';
 
@@ -36,6 +36,7 @@ describe("SFOrder Model", () => {
 describe('Test Order Operations', () => {
 
       let myOrder: BaseOrder;
+      let myProduct: Product;
       let token: string;
       let userId: number;
       let order: Order;
@@ -49,8 +50,11 @@ describe('Test Order Operations', () => {
         });
         userId = res.id;
 
+        const r1 = await productStore.createProduct({name: 'Bottle', price: 39});
+        myProduct = r1;
+
         myOrder = {
-            products: [{product_id: 1, quantity: 2}], 
+            products: [{product_id: r1.id, quantity: 2}], 
             user_id: userId, 
             status: true
           };
@@ -88,6 +92,24 @@ describe('Test Order Operations', () => {
         const result = await store.showOrder(createProduct.id);
         expect(result).toEqual(createProduct);
         store.deleteOrder(createProduct.id);
+    });
+
+    it("READ Order Per User", async () => {
+        // create order 1
+        const createOrder1 = await store.createOrder(myOrder);
+
+        // create order 2
+        const createProduct = await productStore.createProduct({name: 'mouse', price: 10})
+        const createOrder2 = await store.createOrder({
+            products: [{product_id: createProduct.id, quantity: 3}], 
+            user_id: userId, 
+            status: true
+          });
+
+        const result = await store.showOrderByUser(userId);
+        expect(result.length).toEqual(3);
+        store.deleteOrder(createOrder1.id);
+        store.deleteOrder(createOrder2.id);
     });
     
     it('UPDATE Order', async () => {

@@ -87,6 +87,14 @@ export class StorefrontOrderStore {
     }
   }
 
+  async showOrderByUser(user_id: number): Promise<Order[]> {
+    const sql = 'SELECT * FROM SFOrders WHERE user_id=($1)';
+      const conn = await client.connect();
+      const result = await conn.query(sql, [user_id]);
+
+     return result.rows;
+  }
+
   async updateOrder(id: number, baseOrder: BaseOrder): Promise<Order> {
 
       const sql = 'UPDATE SFOrders SET status = $1 WHERE id = $2 RETURNING *';
@@ -106,6 +114,7 @@ export class StorefrontOrderStore {
       }
 
       conn.release();
+
       return {
         user_id: item.user_id, 
           status: item.status,

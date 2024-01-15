@@ -40,18 +40,21 @@ const readOrder = async (req: Request, res: Response) => {
 };
 
 const updateOrder = async (req: Request, res: Response) => {
-    const id = req.params.id as unknown as number;
-    const products = req.body.products as unknown as OrderProduct[];
-    const status = req.body.status as unknown as boolean;
-    const user_id = req.body.user_id as unknown as number;
-
-    const order: Order = await store.updateOrder(id, {
-      products,
-      status,
-      user_id,
+    const order: Order = await store.updateOrder(req.params.id as unknown as number, {
+      products: req.body.products as unknown as OrderProduct[],
+      status: req.body.status as unknown as boolean,
+      user_id: req.body.user_id as unknown as number
     });
 
     res.json(order);
+};
+
+const showOrderByUser = async (req: Request, res: Response) => {
+  const user_id = req.params.id as unknown as number;
+
+  const result = await store.showOrderByUser(user_id)
+  res.sendStatus(200);
+  res.send(result);
 };
 
 const deleteOrder = async (req: Request, res: Response) => {
@@ -79,6 +82,7 @@ export default function orderRoutes(app: Application) {
   app.get('/orders', indexOrder);
   app.post('/orders/create', checkToken, createOrder);
   app.get('/orders/:id', checkToken, readOrder);
+  app.get('/orders/:user_id', checkToken, showOrderByUser);
   app.put('/orders/:id', checkToken, updateOrder);
   app.delete('/orders/:id', checkToken, deleteOrder);
 }
