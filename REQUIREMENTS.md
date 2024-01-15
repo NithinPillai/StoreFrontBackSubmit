@@ -5,33 +5,45 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 ## API Endpoints
 #### Products
-- Index 
-- Show
-- Create [token required]
-- [OPTIONAL] Top 5 most popular products 
-- [OPTIONAL] Products by category (args: product category)
+- Index 'storefront_products/' (GET Request)
+- Show 'storefront_products/:id' (GET Request)
+- Create [token required] 'storefront_products/create' (POST Request)
+
 
 #### Users
-- Index [token required]
-- Show [token required]
-- Create N[token required]
+- Index [token required] 'users/' (GET Request)
+- Show [token required] 'users/:id' (GET Request)
+- Create N[token required] 'users/create' (POST Request)
 
 #### Orders
-- Current Order by user (args: user id)[token required]
-- [OPTIONAL] Completed Orders by user (args: user id)[token required]
+- Current Order by user (args: user id)[token required] 'orders/:user_id' (GET Request)
+
 
 ## Data Shapes
 #### Product
 -  id
 - name
 - price
-- [OPTIONAL] category
+
+CREATE TABLE SFProducts (
+  id    SERIAL PRIMARY KEY,
+  name  VARCHAR(250) NOT NULL,
+  price INTEGER      NOT NULL
+);
 
 #### User
 - id
 - firstName
 - lastName
 - password
+
+CREATE TABLE SFUsers (
+  id              SERIAL PRIMARY KEY,
+  username        VARCHAR(250) NOT NULL,
+  firstname       VARCHAR(250) NOT NULL,
+  lastname        VARCHAR(250) NOT NULL,
+  password_digest VARCHAR(250) NOT NULL
+);
 
 #### Orders
 - id
@@ -40,3 +52,13 @@ These are the notes from a meeting with the frontend developer that describe wha
 - user_id
 - status of order (active or complete)
 
+CREATE TABLE SFOrderProducts (
+  order_id   INTEGER NOT NULL REFERENCES SFOrders (id),
+  product_id INTEGER NOT NULL REFERENCES SFProducts (id),
+  quantity   INTEGER NOT NULL
+);
+CREATE TABLE SFOrders (
+  id      SERIAL PRIMARY KEY,
+  user_id INTEGER NOT NULL REFERENCES SFUsers (id),
+  status  BOOLEAN NOT NULL
+);

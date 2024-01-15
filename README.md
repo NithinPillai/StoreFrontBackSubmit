@@ -52,3 +52,33 @@ Add JWT functionality as shown in the course. Make sure that JWTs are required f
 Before submitting, make sure that your project is complete with a `README.md`. Your `README.md` must include instructions for setting up and running your project including how you setup, run, and connect to your database. 
 
 Before submitting your project, spin it up and test each endpoint. If each one responds with data that matches the data shapes from the `REQUIREMENTS.md`, it is ready for submission!
+
+
+### Instructions on Getting Started
+run 'yarn' to install all packages
+
+run docker-compose up which uses the docker-compose.yml file to start the docker container
+- the databse will be running on localhost port 5432
+
+run 'docker ps' to see the container name 
+run `docker exec -it ${*insert the first 3 letters of the container name here*} /bin/sh' 
+
+then run 'psql -U postgres'
+then run 'CREATE DATABASE sf_db_test;' to create the database for the test
+
+run '\l' to see all the databases 
+run '\c sf_db_dev' if you would like to connect to the database through terminal
+run '\q' and then 'exit' if you would like to exit from the terminal view
+
+
+# Environment Variables
+
+POSTGRES_HOST=127.0.0.1
+POSTGRES_DB=sf_db_dev
+POSTGRES_DB_TEST=sf_db_test
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=password123
+ENV=dev
+BYRCPT_PASSWORD=passyword123
+SALT_ROUNDS=10
+TOKEN_SECRET=adslfkasdflkj
